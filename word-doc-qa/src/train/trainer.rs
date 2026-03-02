@@ -81,7 +81,8 @@ pub fn run_training(docs_dir: &str, config_path: &str) -> Result<(), Box<dyn std
             let loss   = train_loss_fn.forward(logits.clone(), labels.clone());
 
             let loss_f: f32 = loss.clone().into_scalar().elem();
-            let pred  = logits.clone().argmax(1).squeeze::<1>();
+          let batch_size = batch.labels.dims()[0];
+let pred = logits.clone().argmax(1).reshape([batch_size]);
             let ok    = pred.equal(labels.clone()).int().sum().into_scalar().elem::<i32>() as usize;
             train_m.update(loss_f, ok, batch.labels.dims()[0]);
 
@@ -100,7 +101,8 @@ pub fn run_training(docs_dir: &str, config_path: &str) -> Result<(), Box<dyn std
             let loss   = val_loss_fn.forward(logits.clone(), labels.clone());
 
             let loss_f: f32 = loss.into_scalar().elem();
-            let pred  = logits.argmax(1).squeeze::<1>();
+            let batch_size = batch.labels.dims()[0];
+let pred = logits.argmax(1).reshape([batch_size]);
             let ok    = pred.equal(labels).int().sum().into_scalar().elem::<i32>() as usize;
             val_m.update(loss_f, ok, batch.labels.dims()[0]);
         }
