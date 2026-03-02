@@ -1,0 +1,9 @@
+{
+  "learning_rate": 0.0001,
+  "batch_size": 8,
+  "num_epochs": 15,
+  "train_ratio": 0.85,
+  "checkpoint_dir": "./checkpoints",
+  "model_size": "small",
+  "seed": 42
+}
